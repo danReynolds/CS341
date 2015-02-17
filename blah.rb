@@ -5,7 +5,7 @@ totalB = 0
 iterations = 50
 iterations.times do
   pairs = []
-  pairCount = (500..2000).to_a.sample
+  pairCount = 4000
   xs = ys = (pairCount*2..pairCount*4).to_a
   pairCount.times do
     x = xs.shuffle!.pop
@@ -20,18 +20,18 @@ iterations.times do
   end
   file.close
 
-  Benchmark.bm (1) do |x|
-    a = 0
-    b = 0
-    x.report ("fast way:") { a = %x[./a3 < input.txt] }
-    x.report ("naiive way:") { b = %x[./a3naiive < input.txt] }
-    raise if a != b
-    puts a
-    puts b
-    totalA = totalA + a.to_f
-    totalB = totalB + b.to_f
-  end
-  puts "============== Total ==============="
-  puts "Fast way: #{totalA / iterations}"
-  puts "Slow way: #{totalB / iterations}"
+  c = d = 0
+  a = Benchmark.realtime { c = %x[./a3 < input.txt] }
+  b = Benchmark.realtime { d = %x[./a3naiive < input.txt] }
+  puts "============== Iteration ==============="
+  puts "Fast way: #{a}"
+  puts "Slow way: #{b}"
+
+  totalA += a
+  totalB += b
+
+  raise if c != d
 end
+puts "============== Total ==============="
+puts "Fast way: #{totalA / iterations}"
+puts "Slow way: #{totalB / iterations}"
