@@ -44,7 +44,6 @@ dominator dominanceCount(std::vector<point> points) {
   domR.points.push_back(limit);
 
   for (std::vector<point>::iterator it = points.begin(); it < points.end(); it++) {
-    // std::cout << "comparing " << domL.points[i].y << " with " << domR.points[j].y << std::endl;
     if (domL.points[i].y < domR.points[j].y) {
       if (domL.points[i].y != limit.y)
         dom.points.push_back(domL.points[i]);
@@ -55,17 +54,14 @@ dominator dominanceCount(std::vector<point> points) {
     }
 
     else {
-      // std::cout << "pushing " << domR.points[j].y << " color: " << domR.points[j].color << std::endl;
       if (domR.points[j].y != limit.y)
         dom.points.push_back(domR.points[j]);
       if (domR.points[j].color == 0) {
-        // std::cout << "increasing count by " << numBlue << std::endl;
         dom.count += numBlue;
       }
       j++;
     }
   }
-  // std::cout << "increasing count by " << domL.count << " and " << domR.count << std::endl;
   dom.count += domL.count + domR.count;
   return dom;
 }
