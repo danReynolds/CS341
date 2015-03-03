@@ -1,2 +1,168 @@
-<h1 id="algorithm">Algorithm</h1>
-<atom-text-editor class="editor" callattachhooks="true" gutter-hidden="" data-grammar="text plain" data-encoding="utf8"><div class="underlayer"></div><div class="overlayer"></div></atom-text-editor><h1 id="results">Results</h1>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="file:////opt/extras.ubuntu.com/uberwriter/share/uberwriter/media/uberwriter.css" type="text/css" />
+</head>
+<body>
+<h1 id="algorithms-1a">Algorithms 1a</h1>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;limits&gt;
+
+struct point {
+  int x;
+  int y;
+  int color;
+  // 1 indicates blue
+  // 0 indicates red
+};
+
+struct dominator {
+  std::vector&lt;point&gt; points;
+  int count;
+};
+
+dominator dominanceCount(std::vector&lt;point&gt; points) {
+  dominator dom;
+  dom.count = 0;
+  int numBlue = 0;
+  int i = 0;
+  int j = 0;
+
+  if (points.size() == 1) {
+    dom.points = points;
+    return dom;
+  }
+
+  point limit;
+  limit.x = std::numeric_limits&lt;int&gt;::max();
+  limit.y = std::numeric_limits&lt;int&gt;::max();
+  limit.color = -1;
+  std::vector&lt;point&gt; left;
+  left.insert(left.begin(), points.begin(), points.begin() + points.size() / 2);
+
+  std::vector&lt;point&gt; right;
+  right.insert(right.begin(), points.begin() + points.size() / 2, points.end());
+  
+  dominator domL = dominanceCount(left);
+  dominator domR = dominanceCount(right);
+
+  domL.points.push_back(limit);
+  domR.points.push_back(limit);
+
+  for (std::vector&lt;point&gt;::iterator it = points.begin(); it &lt; points.end(); it++) {
+    if (domL.points[i].y &lt; domR.points[j].y) {
+      if (domL.points[i].y != limit.y)
+        dom.points.push_back(domL.points[i]);
+      if (domL.points[i].color == 1) {
+        numBlue++;
+      }
+      i++;
+    }
+
+    else {
+      if (domR.points[j].y != limit.y)
+        dom.points.push_back(domR.points[j]);
+      if (domR.points[j].color == 0) {
+        dom.count += numBlue;
+      }
+      j++;
+    }
+  }
+  dom.count += domL.count + domR.count;
+  return dom;
+}
+
+int main() {
+  int n;
+
+  std::cin &gt;&gt; n;
+
+  std::vector&lt;point&gt; points(n);
+
+  for (int i = 0; i &lt; n; i++) {
+    std::cin &gt;&gt; points[i].x;
+    std::cin &gt;&gt; points[i].y;
+    std::cin &gt;&gt; points[i].color;
+  }
+
+  std::cout &lt;&lt; dominanceCount(points).count;
+
+  return 0;
+}</code></pre>
+<h1 id="input-generation">Input Generation</h1>
+<p>Input is generated using a randomizer script that takes a number of iterations, and number of desired pairs.</p>
+<p>It then randomely selects numbers to use as distinct and and y values from a specified range.</p>
+<p>In the first test, 50 iterations were performed with 2000 pairs and randomly selected from distinct numbers between 0 and 4000.</p>
+<p>The results of this first test follow:</p>
+<table>
+<thead>
+<tr>
+<th>
+Method
+</th>
+<th>
+Average Performance
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Divide and Conquer method
+</td>
+<td>
+0.00953658
+</td>
+</tr>
+<tr>
+<td>
+Brute Force method
+</td>
+<td>
+0.057242916
+</td>
+</tbody>
+</table>
+
+<p>The test times show that on average, over the 50 iterations, the divide and conquer method performed 6 times faster than the naiive brute force method.</p>
+<p>Repeating the test with 50 iterations and twice as many pairs pairs yields a similar pattern of results:</p>
+<table>
+<thead>
+<tr>
+<th>
+Method
+</th>
+<th>
+Average Performance
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Divide and Conquer method
+</td>
+<td>
+0.017255
+</td>
+</tr>
+<tr>
+<td>
+Brute Force method
+</td>
+<td>
+0.220860
+</td>
+</tbody>
+</table>
+
+<p>With increasing number of pairs, the test now runs 12.80 times faster for twice the input size.</p>
+<p>This certainly agrees with the initial analysis that the divide and conquer method should provide a faster solution.</p>
+</body>
+</html>
