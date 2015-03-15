@@ -58,7 +58,7 @@ int main() {
           bfsq.push_back(points[*it]);
         }
         else if (points[*it].color == cur.color) {
-          std::cout << "Failed";
+          std::cout << 0;
           return 0;
         }
       }
@@ -66,7 +66,12 @@ int main() {
   }
 
   for (std::vector<point>::iterator it = points.begin(); it != points.end(); it++) {
-    std::cout << it->color;
+    if (it != points.end() - 1) {
+      std::cout << it->color << " ";
+    }
+    else {
+      std::cout << it->color << std::endl;
+    }
   }
 
   return 0;
