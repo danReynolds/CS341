@@ -58,7 +58,7 @@ int main() {
           bfsq.push_back(points[*it]);
         }
         else if (points[*it].color == cur.color) {
-          std::cout << 0;
+          std::cout << 0 << std::endl;
           return 0;
         }
       }
