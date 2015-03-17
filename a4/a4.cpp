@@ -64,7 +64,7 @@ int main() {
         }
         // If the node has been visited, then if it shares our color, no bipartition can be formed.
         else if (points[*it].color == cur.color) {
-          std::cout << 0;
+          std::cout << 0 << std::endl;
           return 0;
         }
       }
